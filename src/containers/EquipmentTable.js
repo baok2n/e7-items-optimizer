@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import { cloneDeep } from 'lodash';
+import EquipmentCard from '../components/EquipmentCard';
 
 // Import React Table
 import ReactTable from "react-table";
@@ -48,6 +49,7 @@ class EquipmentTable extends Component {
             onChange={e => this._handleImport(e.target.files[0])}
           />
         </div>
+        <EquipmentCard />
         <br />
         <ReactTable
             data={tableData}
