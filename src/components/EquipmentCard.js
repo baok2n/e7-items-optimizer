@@ -1,11 +1,11 @@
 import React from "react";
 import './EquipmentCard.scss';
 
-const EquipmentCard = () => {
+const EquipmentCard = ({data, equipmentType}) => {
   return (
     <div className="card-wrapper">
       <div className="title">
-        <i className="slot-icon weapon" />
+        <i className={`slot-icon ${equipmentType}`} />
         &nbsp;Epic weapon&nbsp;
         <span className="level">85</span>
       </div>
