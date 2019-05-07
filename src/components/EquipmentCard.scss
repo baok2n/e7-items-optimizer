@@ -1,62 +1,69 @@
-.card-wrapper {
-  width: 12em;
-  height: auto;
-  padding: .8em;
-  background-color: #000;
-  border: 2px solid #4c3c28;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #000;
-  margin: 1em;
-  color: #fff;
-  position: relative;
+.cards-wrapper {
+  display: flex;
+  width: 55%;
+  flex-wrap: wrap;
 
-  .title {
-    font-size: 1.1rem;
-    font-weight: 700;
+  .card-wrapper {
+    width: 12em;
+    height: auto;
+    padding: .8em;
+    background-color: #000;
+    border: 2px solid #4c3c28;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #000;
+    margin: 1em;
+    color: #fff;
     position: relative;
-  }
-
-  .separator {
-    height: 1px;
-    border-bottom: 1px solid #1d160d;
-    margin: .5em 0;
-  }
-
-  .sub-stat {
-    font-size: .8rem;
-    font-weight: 400;
-    color: #717171;
-  }
-
-  .slot-icon {
-    margin-right: .2em;
-    width: 17px;
-    height: 17px;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
     display: inline-block;
-    position: relative;
-    margin-bottom: -2px;
-  }
 
-  .weapon {
-    background-image: url('../assets/slots/slot_weapon.png');
-  }
+    .title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      position: relative;
+    }
 
-  .level {
-    color: #ffa21c;
-  }
+    .separator {
+      height: 1px;
+      border-bottom: 1px solid #1d160d;
+      margin: .5em 0;
+    }
 
-  .key {
-    display: inline-block;
-    width: 70%;
-    text-align: left;
-  }
+    .sub-stat {
+      font-size: .8rem;
+      font-weight: 400;
+      color: #717171;
+    }
 
-  .value {
-    display: inline-block;
-    width: 30%;
-    text-align: right;
+    .slot-icon {
+      margin-right: .2em;
+      width: 17px;
+      height: 17px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      display: inline-block;
+      position: relative;
+      margin-bottom: -2px;
+    }
+
+    .weapon {
+      background-image: url('../assets/slots/slot_weapon.png');
+    }
+
+    .level {
+      color: #ffa21c;
+    }
+
+    .key {
+      display: inline-block;
+      width: 70%;
+      text-align: left;
+    }
+
+    .value {
+      display: inline-block;
+      width: 30%;
+      text-align: right;
+    }
   }
 }

@@ -46,7 +46,7 @@ class EquipmentTable extends Component {
 
   _handleImport = (file) => {
     const fileReader = new FileReader();
-    fileReader.onloadend = (e) => {
+    fileReader.onloadend = () => {
       const content = JSON.parse(fileReader.result);
       this.fullData = content;
       this.setState({
@@ -105,9 +105,11 @@ class EquipmentTable extends Component {
           onChange={(data) => { this.setState({ selectedHeroData: data }) }}
           labelField="name"
           valueField="id"
+          style={{width: '20%'}}
           />
         <EquipmentCardWrapper
-          data={this.state.selectedHeroData}
+          heroData={this.state.selectedHeroData}
+          itemData={this.fullData.items}
         />
         <br />
         <ReactTable
@@ -115,6 +117,26 @@ class EquipmentTable extends Component {
             filterable
             showPaginationTop
             showPaginationBottom={false}
+            getTdProps={(state, rowInfo, column, instance) => {
+              return {
+                onDoubleClick: (e, handleOriginal) => {
+                  console.log('A Td Element was clicked!')
+                  console.log('it produced this event:', e)
+                  console.log('It was in this column:', column)
+                  console.log('It was in this row:', rowInfo)
+                  console.log('It was in this table instance:', instance)
+           
+                  // IMPORTANT! React-Table uses onClick internally to trigger
+                  // events like expanding SubComponents and pivots.
+                  // By default a custom 'onClick' handler will override this functionality.
+                  // If you want to fire the original onClick handler, call the
+                  // 'handleOriginal' function.
+                  if (handleOriginal) {
+                    handleOriginal()
+                  }
+                }
+              }
+            }}
             columns={[
               {
                 columns: [

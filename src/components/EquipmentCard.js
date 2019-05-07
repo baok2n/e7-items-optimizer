@@ -1,42 +1,52 @@
 import React from "react";
+import { isEmpty } from 'lodash';
 import './EquipmentCard.scss';
 
-const EquipmentCard = ({data, equipmentType}) => {
+const EquipmentCard = ({data = {}, slot}) => {
+  const {
+    rarity = '',
+    level = 0,
+    mainStats = ['Attack', 9999],
+    subStat1 = [],
+    subStat2 = [],
+    subStat3 = [],
+    subStat4 = [],
+    set = 'Item',
+  } = data;
+
+  const _renderSubStats = (subStat) => {
+    if (isEmpty(subStat)) {
+      return;
+    }
+    return (
+      <div className="sub-stat">
+        <div className="key">{subStat[0]}</div>
+        <div className="value">{subStat[1]}</div>
+      </div>
+    );
+  };
   return (
     <div className="card-wrapper">
       <div className="title">
-        <i className={`slot-icon ${equipmentType}`} />
-        &nbsp;Epic weapon&nbsp;
-        <span className="level">85</span>
+        <i className={`slot-icon ${slot}`} />
+        &nbsp;{`${rarity} ${slot}`}&nbsp;
+        <span className="level">{level}</span>
       </div>
-
       <div className="separator" />
       <div className="main-stat">
-        <div className="key">Attack</div>
-        <div className="value">300</div>
+        <div className="key">{mainStats[0]}</div>
+        <div className="value">{mainStats[1]}</div>
       </div>
       <div className="separator" />
-      <div className="sub-stat">
-        <div className="key">Attack</div>
-        <div className="value">15%</div>
-      </div>
-      <div className="sub-stat">
-        <div className="key">Speed</div>
-        <div className="value">10</div>
-      </div>
-      <div className="sub-stat">
-        <div className="key">Crit chance</div>
-        <div className="value">10</div>
-      </div>
-      <div className="sub-stat">
-        <div className="key">Hp</div>
-        <div className="value">10%</div>
-      </div>
+      {_renderSubStats(subStat1)}
+      {_renderSubStats(subStat2)}
+      {_renderSubStats(subStat3)}
+      {_renderSubStats(subStat4)}
       <div className="separator" />
 
-      <div>Lifesteal set</div>
+      <div>{`${set} Set`}</div>
       <div className="separator" />
-      <div>Location: Sez1</div>
+      <div>Location: </div>
     </div>
   )
 }

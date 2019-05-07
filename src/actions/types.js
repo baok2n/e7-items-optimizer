@@ -1,1 +1,3 @@
 export const FETCH_GITHUB_DATA = 'FETCH_GITHUB_DATA';
+export const FETCH_E7_DATA = 'FETCH_E7_DATA';
+
