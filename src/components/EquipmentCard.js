@@ -6,7 +6,7 @@ const EquipmentCard = ({data = {}, slot}) => {
   const {
     rarity = '',
     level = 0,
-    mainStats = ['Attack', 9999],
+    mainStat = ['Attack', '???'],
     subStat1 = [],
     subStat2 = [],
     subStat3 = [],
@@ -34,8 +34,8 @@ const EquipmentCard = ({data = {}, slot}) => {
       </div>
       <div className="separator" />
       <div className="main-stat">
-        <div className="key">{mainStats[0]}</div>
-        <div className="value">{mainStats[1]}</div>
+        <div className="key">{mainStat[0]}</div>
+        <div className="value">{mainStat[1]}</div>
       </div>
       <div className="separator" />
       {_renderSubStats(subStat1)}

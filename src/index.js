@@ -1,19 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
-import EquipmentTable from './containers/EquipmentTable';
+import E7App from './containers/E7App';
 import rootReducer from './reducers';
-import { fetchGithubData } from './actions/index';
 import './App.css';
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-store.dispatch(fetchGithubData());
+const store = createStore(
+  rootReducer,
+  composeEnhancer(applyMiddleware(thunk)),
+);
+  
 
 ReactDOM.render(
   <Provider store={store}>
-    <EquipmentTable />
-  </Provider>, document.getElementById('root'));
+    <E7App />
+  </Provider>, document.getElementById('root')
+);

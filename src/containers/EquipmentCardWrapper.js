@@ -1,30 +1,16 @@
 import React, {Component} from "react";
-import { isEmpty, map, find } from 'lodash';
+import { find } from 'lodash';
 import EquipmentCard from '../components/EquipmentCard';
 
 class EquipmentCardWrapper extends Component {
-  _getEquipedItems = () => {
-    if (isEmpty(this.props.heroData)) {
-      return null;
-    }
-
-    const { equipment } = this.props.heroData[0];
-    return map(Object.keys(equipment), item => {
-      const itemId = equipment[item];
-      return find(this.props.itemData, i => {
-        return i.id === itemId;
-      });
-    });
-  }
-
   _getItemData = (items, itemSlot) => (
     find(items, item => (
       item.slot === itemSlot
     ))
-  )
+  );
 
   render() {
-    const items = this._getEquipedItems();
+    const items = this.props.data;
     return (
       <div className="cards-wrapper">
         <EquipmentCard

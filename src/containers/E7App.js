@@ -1,18 +1,25 @@
 import React, {Component} from "react";
-import { cloneDeep, get, set } from 'lodash';
-import EquipmentCardWrapper from './EquipmentCardWrapper';
+import { connect } from 'react-redux';
+
+import { cloneDeep, get, set, isEmpty, map, find } from 'lodash';
+
 import { saveAs } from 'file-saver';
 import Select from "react-dropdown-select";
+
+import EquipmentCardWrapper from './EquipmentCardWrapper';
+import HeroStatsView from '../components/HeroStatsView';
+import { getHeroStats } from '../actions';
 
 // Import React Table
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 
-class EquipmentTable extends Component {
+class E7App extends Component {
   state = {
     itemData: [],
     heroData: [],
     selectedHeroData: {},
+    equipedItems: [],
   };
   fullData = [];
 
@@ -83,6 +90,42 @@ class EquipmentTable extends Component {
     );
   }
 
+  _getEquipedItems = (selectedHeroData) => {
+    if (isEmpty(selectedHeroData)) {
+      return null;
+    }
+
+    const { equipment } = selectedHeroData[0];
+    return map(Object.keys(equipment), item => {
+      const itemId = equipment[item];
+      return find(this.state.itemData, i => {
+        return i.id === itemId;
+      });
+    });
+  }
+
+  _updateEquipedItems = (rowInfo) => {
+    if (!rowInfo) {
+      return null;
+    }
+    const selectedItem = rowInfo.original;
+    const newEquipedItems = map(this.state.equipedItems, item => {
+      if (item.slot === selectedItem.slot) {
+        return selectedItem;
+      }
+      return item;
+    });
+    this.setState({ equipedItems: newEquipedItems });
+  }
+
+  _handleSelectHero = data => {
+    this.props.getHeroStats('luna', { "stars": 5, "level": 50, "awakening": 0, "artifact": { "stats": {} }, "weapon": { "stats": { "atk": 100 }, "set": "attack" }, "helmet": { "stats": { "hp": 500 }, "set": "critical" }, "armour": { "stats": {}, "set": "" }, "necklace": { "stats": {}, "set": "" }, "ring": { "stats": {}, "set": "" }, "boots": { "stats": {}, "set": "" } });
+    this.setState({
+      selectedHeroData: data,
+      equipedItems: this._getEquipedItems(data)
+    });
+  }
+
   render () {
     const { itemData = [], heroData = [] } = this.state;
     return (
@@ -102,38 +145,27 @@ class EquipmentTable extends Component {
         </div>
         <Select
           options={heroData}
-          onChange={(data) => { this.setState({ selectedHeroData: data }) }}
+          onChange={(data) => {this._handleSelectHero(data)}}
           labelField="name"
           valueField="id"
           style={{width: '20%'}}
           />
-        <EquipmentCardWrapper
-          heroData={this.state.selectedHeroData}
-          itemData={this.fullData.items}
-        />
+        <div className="stats-review">
+          <EquipmentCardWrapper
+            data={this.state.equipedItems}
+          />
+          <HeroStatsView />
+        </div>
         <br />
         <ReactTable
             data={itemData}
             filterable
             showPaginationTop
             showPaginationBottom={false}
-            getTdProps={(state, rowInfo, column, instance) => {
+            getTdProps={(_, rowInfo) => {
               return {
-                onDoubleClick: (e, handleOriginal) => {
-                  console.log('A Td Element was clicked!')
-                  console.log('it produced this event:', e)
-                  console.log('It was in this column:', column)
-                  console.log('It was in this row:', rowInfo)
-                  console.log('It was in this table instance:', instance)
-           
-                  // IMPORTANT! React-Table uses onClick internally to trigger
-                  // events like expanding SubComponents and pivots.
-                  // By default a custom 'onClick' handler will override this functionality.
-                  // If you want to fire the original onClick handler, call the
-                  // 'handleOriginal' function.
-                  if (handleOriginal) {
-                    handleOriginal()
-                  }
+                onDoubleClick: () => {
+                  this._updateEquipedItems(rowInfo);
                 }
               }
             }}
@@ -281,4 +313,10 @@ class EquipmentTable extends Component {
   }
 };
 
-export default EquipmentTable;
+const mapDispatchToProps = dispatch => {
+  return {
+    getHeroStats: (heroName, requestBody) => dispatch(getHeroStats(heroName, requestBody)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(E7App);
