@@ -119,10 +119,14 @@ class E7App extends Component {
   }
 
   _handleSelectHero = data => {
-    this.props.getHeroStats('luna', { "stars": 5, "level": 50, "awakening": 0, "artifact": { "stats": {} }, "weapon": { "stats": { "atk": 100 }, "set": "attack" }, "helmet": { "stats": { "hp": 500 }, "set": "critical" }, "armour": { "stats": {}, "set": "" }, "necklace": { "stats": {}, "set": "" }, "ring": { "stats": {}, "set": "" }, "boots": { "stats": {}, "set": "" } });
+    const equipedItems = this._getEquipedItems(data);
+    const heroName = get(data, '[0].baseHeroId');
+    // send data to API to get stats review
+    // this.props.getHeroStats('luna', { "stars": 5, "level": 50, "awakening": 0, "artifact": { "stats": {} }, "weapon": { "stats": { "atk": 100 }, "set": "attack" }, "helmet": { "stats": { "hp": 500 }, "set": "critical" }, "armour": { "stats": {}, "set": "" }, "necklace": { "stats": {}, "set": "" }, "ring": { "stats": {}, "set": "" }, "boots": { "stats": {}, "set": "" } });
+    this.props.getHeroStats(heroName, equipedItems);
     this.setState({
       selectedHeroData: data,
-      equipedItems: this._getEquipedItems(data)
+      equipedItems
     });
   }
 
@@ -315,7 +319,7 @@ class E7App extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getHeroStats: (heroName, requestBody) => dispatch(getHeroStats(heroName, requestBody)),
+    getHeroStats: (heroName, equipedItems) => dispatch(getHeroStats(heroName, equipedItems)),
   }
 }
 

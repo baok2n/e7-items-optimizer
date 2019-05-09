@@ -1,16 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { map, get } from 'lodash';
+import { HERO_STATS } from './types';
 import './HeroStatsView.scss';
 
 const HeroStatsView = ({heroStats}) => {
-  const _renderStatTableRow = (title, base, gear) => (
-    <tr>
-      <th>{title}</th>
+  const _renderStatTableRow = (statName, base, gear) => {
+    console.log('base', statName, base, gear);
+    return (<tr key={statName}>
+      <th>{statName}</th>
       <td>{base}</td>
       <td>{gear}</td>
       <td>{base + gear}</td>
-    </tr>
-  )
+    </tr>);
+  }
+
+  const _renderStats = () => {
+    console.log('sadasd', heroStats);
+    return map(Object.keys(HERO_STATS), statKey => (
+      _renderStatTableRow(HERO_STATS[statKey], 0, get(heroStats, `stats[${statKey}]`, 0))
+    ));
+  };
+  
   return (
     <div className="hero-stats-view-wrapper">
       <div className="header">
@@ -26,7 +37,7 @@ const HeroStatsView = ({heroStats}) => {
           </tr>
         </thead>
         <tbody>
-          {_renderStatTableRow('Attack', 900, 2000)}
+          {_renderStats()}
         </tbody>
       </table>
     </div>
