@@ -1,6 +1,7 @@
 import { GET_HERO_STATS, FETCH_E7_DATA, REQUEST_BODY_TEMPLATE } from './types';
 import axios from 'axios';
-import { forEach } from 'lodash';
+import { forEach, includes } from 'lodash';
+import { getApiStatString } from '../utils';
 
 const apiUrl = 'https://epicseven-tools-api.herokuapp.com/heroes';
 
@@ -33,20 +34,32 @@ export const getStats = (data) => {
 const buildRequestBody = (equipedItems) => {
   const requestBody = Object.assign({}, REQUEST_BODY_TEMPLATE);
   forEach(equipedItems, item => {
-    const slot = item.slot.toLowerCase();
     const stats = {};
+    let slot = item.slot.toLowerCase();
+    if (slot === 'armor') {
+      slot = 'armour';
+    }
+    requestBody[slot] = {};
     // collect main stat
-    stats[item.mainStat[0].toLowerCase] = item.mainStat[1];
+    const mainStatName = getApiStatString(item.mainStat[0].toLowerCase());
+    const mainStatValue = includes(['chc', 'chd', 'atk%'], mainStatName) ? item.mainStat[1] / 100 : item.mainStat[1];
+    stats[mainStatName] = mainStatValue;
     // collect substats
     forEach(Object.keys(item.subStats), subStat => {
-      stats[item.subStats[item.subStats]] = item.mainStat[1];
-    })
-  })
-  return {};
+      const subStatName = getApiStatString(subStat.toLowerCase());
+      const subStatValue = includes(['chc', 'chd', 'atk%'], subStatName) ? item.subStats[subStat] / 100 : item.subStats[subStat];
+      stats[subStatName] = subStatValue;
+    });
+    // collect item set
+    requestBody[slot].set = item.set;
+    // apply stats to requestBody
+    requestBody[slot].stats = stats; 
+  });
+
+  return requestBody;
 }
 
 export const getHeroStats = (heroName, equipedItems) => {
-
   const requestBody = buildRequestBody(equipedItems);
   return (dispatch) => {
     return axios.post(`${apiUrl}/${heroName}/equip`, requestBody)

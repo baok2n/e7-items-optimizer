@@ -6,7 +6,8 @@ const EquipmentCard = ({data = {}, slot}) => {
   const {
     rarity = '',
     level = 0,
-    mainStat = ['Attack', '???'],
+    ability = 0,
+    mainStat = ['???', '???'],
     subStat1 = [],
     subStat2 = [],
     subStat3 = [],
@@ -31,6 +32,7 @@ const EquipmentCard = ({data = {}, slot}) => {
         <i className={`slot-icon ${slot}`} />
         &nbsp;{`${rarity} ${slot}`}&nbsp;
         <span className="level">{level}</span>
+        <span className="ability">+{ability}</span>
       </div>
       <div className="separator" />
       <div className="main-stat">
@@ -38,15 +40,18 @@ const EquipmentCard = ({data = {}, slot}) => {
         <div className="value">{mainStat[1]}</div>
       </div>
       <div className="separator" />
-      {_renderSubStats(subStat1)}
-      {_renderSubStats(subStat2)}
-      {_renderSubStats(subStat3)}
-      {_renderSubStats(subStat4)}
+      <div className="substats-wrapper">
+        {_renderSubStats(subStat1)}
+        {_renderSubStats(subStat2)}
+        {_renderSubStats(subStat3)}
+        {_renderSubStats(subStat4)}
+      </div>
       <div className="separator" />
 
       <div>{`${set} Set`}</div>
       <div className="separator" />
       <div>Location: </div>
+      <span className="equip-btn">equip</span>
     </div>
   )
 }

@@ -20,6 +20,7 @@ class E7App extends Component {
     heroData: [],
     selectedHeroData: {},
     equipedItems: [],
+    selectedHeroName: '',
   };
   fullData = [];
 
@@ -120,13 +121,14 @@ class E7App extends Component {
 
   _handleSelectHero = data => {
     const equipedItems = this._getEquipedItems(data);
-    const heroName = get(data, '[0].baseHeroId');
+    const selectedHero = get(data, `[0].baseHeroId`);
     // send data to API to get stats review
     // this.props.getHeroStats('luna', { "stars": 5, "level": 50, "awakening": 0, "artifact": { "stats": {} }, "weapon": { "stats": { "atk": 100 }, "set": "attack" }, "helmet": { "stats": { "hp": 500 }, "set": "critical" }, "armour": { "stats": {}, "set": "" }, "necklace": { "stats": {}, "set": "" }, "ring": { "stats": {}, "set": "" }, "boots": { "stats": {}, "set": "" } });
-    this.props.getHeroStats(heroName, equipedItems);
+    this.props.getHeroStats(selectedHero, equipedItems);
     this.setState({
       selectedHeroData: data,
-      equipedItems
+      equipedItems,
+      selectedHeroName: selectedHero,
     });
   }
 
@@ -158,7 +160,9 @@ class E7App extends Component {
           <EquipmentCardWrapper
             data={this.state.equipedItems}
           />
-          <HeroStatsView />
+          <HeroStatsView
+            heroName={this.state.selectedHeroName}
+          />
         </div>
         <br />
         <ReactTable
@@ -166,7 +170,7 @@ class E7App extends Component {
             filterable
             showPaginationTop
             showPaginationBottom={false}
-            getTdProps={(_, rowInfo) => {
+            getTdProps={(_, rowInfo, undefined, instance) => {
               return {
                 onDoubleClick: () => {
                   this._updateEquipedItems(rowInfo);
@@ -174,6 +178,18 @@ class E7App extends Component {
               }
             }}
             columns={[
+              {
+                Header: 'Action',
+                columns: [
+                  {
+                    Cell: <button
+                            className="btn btn-default"
+                          >
+                          Review
+                          </button>
+                  }
+                ]
+              },
               {
                 columns: [
                   {

@@ -4,9 +4,8 @@ import { map, get } from 'lodash';
 import { HERO_STATS } from './types';
 import './HeroStatsView.scss';
 
-const HeroStatsView = ({heroStats}) => {
+const HeroStatsView = ({heroStats, heroName='invoka'}) => {
   const _renderStatTableRow = (statName, base, gear) => {
-    console.log('base', statName, base, gear);
     return (<tr key={statName}>
       <th>{statName}</th>
       <td>{base}</td>
@@ -16,7 +15,6 @@ const HeroStatsView = ({heroStats}) => {
   }
 
   const _renderStats = () => {
-    console.log('sadasd', heroStats);
     return map(Object.keys(HERO_STATS), statKey => (
       _renderStatTableRow(HERO_STATS[statKey], 0, get(heroStats, `stats[${statKey}]`, 0))
     ));
@@ -25,7 +23,7 @@ const HeroStatsView = ({heroStats}) => {
   return (
     <div className="hero-stats-view-wrapper">
       <div className="header">
-        <span className="hero-name">Luna</span>
+        <span className="hero-name">{heroName}</span>
       </div>
       <table className="hero-stats-table">
         <thead>

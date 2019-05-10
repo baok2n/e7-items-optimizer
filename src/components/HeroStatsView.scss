@@ -26,7 +26,6 @@
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     border-spacing: 0;
     border-collapse: collapse;
-
     thead {
       display: table-header-group;
 
@@ -60,6 +59,7 @@
 
     tbody {
       display: table-row-group;
+      min-height: 200px;
 
       tr {
         color: inherit;

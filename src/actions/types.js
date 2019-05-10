@@ -8,32 +8,4 @@ export const REQUEST_BODY_TEMPLATE = {
   "artifact": {
     "stats": {}
   },
-  "weapon": {
-    "stats": {
-      "atk": 100
-    },
-    "set": "attack"
-  },
-  "helmet": {
-    "stats": {
-      "hp": 500
-    },
-    "set": "critical"
-  },
-  "armour": {
-    "stats": {},
-    "set": ""
-  },
-  "necklace": {
-    "stats": {},
-    "set": ""
-  },
-  "ring": {
-    "stats": {},
-    "set": ""
-  },
-  "boots": {
-    "stats": {},
-    "set": ""
-  }
 }

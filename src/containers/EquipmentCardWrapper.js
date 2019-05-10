@@ -34,7 +34,7 @@ class EquipmentCardWrapper extends Component {
           slot='Ring'
         />
         <EquipmentCard
-          data={this._getItemData(items, 'Boot')}
+          data={this._getItemData(items, 'Boots')}
           slot='Boot'
         />
       </div>

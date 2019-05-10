@@ -1,12 +1,13 @@
 .stats-review {
   display: flex;
+  background-color: #262626;
   
   .cards-wrapper {
     display: inline-block;;
     width: 55%;
 
     .card-wrapper {
-      width: 12em;
+      width: 13em;
       height: auto;
       padding: .8em;
       background-color: #424242;
@@ -19,15 +20,47 @@
       display: inline-block;
 
       .title {
-        font-size: 1rem;
+        font-size: 0.9rem;
         font-weight: 700;
         position: relative;
+      }
+
+      .ability {
+        background-color: #ffa21c;
+        color: #fff;
+        font-size: .8rem;
+        text-shadow: 0 0 3px #8c4e19;
+        padding: .2em .4em .1em .3em;
+        border-radius: 10px;
+        margin-left: .2em;
+        position: absolute;
+        top: -1.5em;
+        right: -1.5em;
       }
 
       .separator {
         height: 1.1px;
         border-bottom: 1px solid #1d160d;
         margin: .5em 0;
+      }
+
+      .equip-btn {
+        background-color: #2e563e;
+        color: #fff;
+        font-size: 15px;
+        text-shadow: 0 0 3px #8c4e19;
+        padding: .2em .4em .1em .3em;
+        border-radius: 10px;
+        margin-left: .2em;
+        position: absolute;
+        bottom: -8px;
+        right: -15px;
+        padding-bottom: 6px;
+        cursor: pointer;
+      }
+
+      .substats-wrapper {
+        min-height: 75px;
       }
 
       .sub-stat {
