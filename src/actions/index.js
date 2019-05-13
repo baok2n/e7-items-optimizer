@@ -1,4 +1,9 @@
-import { GET_HERO_STATS, FETCH_E7_DATA, REQUEST_BODY_TEMPLATE } from './types';
+import {
+  GET_HERO_STATS_LOADING,
+  GET_HERO_STATS_SUCCESS,
+  FETCH_E7_DATA,
+  REQUEST_BODY_TEMPLATE
+} from './types';
 import axios from 'axios';
 import { forEach, includes } from 'lodash';
 import { getApiStatString } from '../utils';
@@ -26,7 +31,7 @@ export const fetchGithubData = () => {
 
 export const getStats = (data) => {
   return {
-    type: GET_HERO_STATS,
+    type: GET_HERO_STATS_SUCCESS,
     data
   }
 };
@@ -60,8 +65,9 @@ const buildRequestBody = (equipedItems) => {
 }
 
 export const getHeroStats = (heroName, equipedItems) => {
-  const requestBody = buildRequestBody(equipedItems);
   return (dispatch) => {
+    dispatch({ type: GET_HERO_STATS_LOADING });
+    const requestBody = buildRequestBody(equipedItems);
     return axios.post(`${apiUrl}/${heroName}/equip`, requestBody)
       .then(response => {
         dispatch(getStats(response.data))
@@ -71,3 +77,4 @@ export const getHeroStats = (heroName, equipedItems) => {
       });
   };
 };
+

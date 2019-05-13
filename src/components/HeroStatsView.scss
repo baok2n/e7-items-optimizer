@@ -44,7 +44,7 @@
           vertical-align: inherit;
 
           color: rgba(255, 255, 255, 0.7);
-          font-size: 0.75rem;
+          font-size: 15px;
           font-weight: 500;
 
           padding-right: 24px;
@@ -59,7 +59,6 @@
 
     tbody {
       display: table-row-group;
-      min-height: 200px;
 
       tr {
         color: inherit;
@@ -75,7 +74,7 @@
           border-bottom: 1px solid rgba(81, 81, 81, 1);
           vertical-align: inherit;
           color: #fff;
-          font-size: 0.8125rem;
+          font-size: 15px;
           font-weight: 400;
           padding-right: 24px;
         }

@@ -333,7 +333,7 @@ class E7App extends Component {
   }
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = () => dispatch => {
   return {
     getHeroStats: (heroName, equipedItems) => dispatch(getHeroStats(heroName, equipedItems)),
   }
