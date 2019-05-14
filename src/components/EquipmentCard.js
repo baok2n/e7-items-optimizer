@@ -1,6 +1,7 @@
 import React from "react";
 import { isEmpty } from 'lodash';
 import './EquipmentCard.scss';
+import { getDisplayStatValueFormat } from '../utils';
 
 const EquipmentCard = ({data = {}, slot}) => {
   const {
@@ -22,7 +23,7 @@ const EquipmentCard = ({data = {}, slot}) => {
     return (
       <div className="sub-stat">
         <div className="key">{subStat[0]}</div>
-        <div className="value">{subStat[1]}</div>
+        <div className="value">{getDisplayStatValueFormat(subStat[0], subStat[1])}</div>
       </div>
     );
   };
@@ -37,7 +38,7 @@ const EquipmentCard = ({data = {}, slot}) => {
       <div className="separator" />
       <div className="main-stat">
         <div className="key">{mainStat[0]}</div>
-        <div className="value">{mainStat[1]}</div>
+        <div className="value">{getDisplayStatValueFormat(mainStat[0], mainStat[1])}</div>
       </div>
       <div className="separator" />
       <div className="substats-wrapper">

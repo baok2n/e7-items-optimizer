@@ -2,7 +2,9 @@ import {
   GET_HERO_STATS_LOADING,
   GET_HERO_STATS_SUCCESS,
   FETCH_E7_DATA,
-  REQUEST_BODY_TEMPLATE
+  REQUEST_BODY_TEMPLATE,
+  SET_HERO_GEAR,
+  UPDATE_HERO_GEAR,
 } from './types';
 import axios from 'axios';
 import { forEach, includes } from 'lodash';
@@ -47,12 +49,12 @@ const buildRequestBody = (equipedItems) => {
     requestBody[slot] = {};
     // collect main stat
     const mainStatName = getApiStatString(item.mainStat[0].toLowerCase());
-    const mainStatValue = includes(['chc', 'chd', 'atk%'], mainStatName) ? item.mainStat[1] / 100 : item.mainStat[1];
+    const mainStatValue = includes(['chc', 'chd', 'atk%', 'hp%'], mainStatName) ? item.mainStat[1] / 100 : item.mainStat[1];
     stats[mainStatName] = mainStatValue;
     // collect substats
     forEach(Object.keys(item.subStats), subStat => {
       const subStatName = getApiStatString(subStat.toLowerCase());
-      const subStatValue = includes(['chc', 'chd', 'atk%'], subStatName) ? item.subStats[subStat] / 100 : item.subStats[subStat];
+      const subStatValue = includes(['chc', 'chd', 'atk%', 'hp%'], subStatName) ? item.subStats[subStat] / 100 : item.subStats[subStat];
       stats[subStatName] = subStatValue;
     });
     // collect item set
@@ -78,3 +80,25 @@ export const getHeroStats = (heroName, equipedItems) => {
   };
 };
 
+export const setHeroGear = (heroId, gear) => {
+  return (dispatch) => {
+    return (
+      dispatch({
+        type: SET_HERO_GEAR,
+        heroId,
+        gear
+      })
+    )
+  }
+}
+
+export const updateHeroGear = gear => {
+  return (dispatch) => {
+    return (
+      dispatch({
+        type: UPDATE_HERO_GEAR,
+        gear
+      })
+    )
+  }
+}

@@ -8,7 +8,7 @@ import Select from "react-dropdown-select";
 
 import EquipmentCardWrapper from './EquipmentCardWrapper';
 import HeroStatsView from '../components/HeroStatsView';
-import { getHeroStats } from '../actions';
+import { getHeroStats, setHeroGear, updateHeroGear } from '../actions';
 
 // Import React Table
 import ReactTable from "react-table";
@@ -19,7 +19,6 @@ class E7App extends Component {
     itemData: [],
     heroData: [],
     selectedHeroData: {},
-    equipedItems: [],
     selectedHeroName: '',
   };
   fullData = [];
@@ -80,7 +79,6 @@ class E7App extends Component {
         suppressContentEditableWarning
         onBlur={e => {
           const itemData = [...this.state.itemData];
-          // data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
           set(itemData, `${cellInfo.index}.${cellInfo.column.id}`, e.target.innerHTML);
           this.setState({ itemData });
         }}
@@ -110,24 +108,25 @@ class E7App extends Component {
       return null;
     }
     const selectedItem = rowInfo.original;
-    const newEquipedItems = map(this.state.equipedItems, item => {
+    const newEquipedItems = map(this.props.gearData.gear, item => {
       if (item.slot === selectedItem.slot) {
         return selectedItem;
       }
       return item;
     });
-    this.setState({ equipedItems: newEquipedItems });
+    this.props.updateHeroGear(newEquipedItems);
+    this.props.getHeroStats(this.state.selectedHeroName, newEquipedItems);
   }
 
   _handleSelectHero = data => {
     const equipedItems = this._getEquipedItems(data);
     const selectedHero = get(data, `[0].baseHeroId`);
+    const heroId = get(data, '[0].id');
     // send data to API to get stats review
-    // this.props.getHeroStats('luna', { "stars": 5, "level": 50, "awakening": 0, "artifact": { "stats": {} }, "weapon": { "stats": { "atk": 100 }, "set": "attack" }, "helmet": { "stats": { "hp": 500 }, "set": "critical" }, "armour": { "stats": {}, "set": "" }, "necklace": { "stats": {}, "set": "" }, "ring": { "stats": {}, "set": "" }, "boots": { "stats": {}, "set": "" } });
     this.props.getHeroStats(selectedHero, equipedItems);
+    this.props.setHeroGear(heroId, equipedItems);
     this.setState({
       selectedHeroData: data,
-      equipedItems,
       selectedHeroName: selectedHero,
     });
   }
@@ -136,29 +135,9 @@ class E7App extends Component {
     const { itemData = [], heroData = [] } = this.state;
     return (
       <div>
-        <div>
-          <input
-            type="file"
-            accept="*.json"
-            onChange={e => this._handleImport(e.target.files[0])}
-          />
-          <button
-            className="btn btn-danger"
-            onClick={this._handleExport}
-          >
-            Export
-          </button>
-        </div>
-        <Select
-          options={heroData}
-          onChange={(data) => {this._handleSelectHero(data)}}
-          labelField="name"
-          valueField="id"
-          style={{width: '20%'}}
-          />
         <div className="stats-review">
           <EquipmentCardWrapper
-            data={this.state.equipedItems}
+            data={this.props.gearData.gear}
           />
           <HeroStatsView
             heroName={this.state.selectedHeroName}
@@ -182,11 +161,8 @@ class E7App extends Component {
                 Header: 'Action',
                 columns: [
                   {
-                    Cell: <button
-                            className="btn btn-default"
-                          >
-                          Review
-                          </button>
+                    minWidth: 65,
+                    Cell: <div className="review">Review</div>
                   }
                 ]
               },
@@ -328,15 +304,43 @@ class E7App extends Component {
             defaultPageSize={10}
             className="-striped -highlight"
           />
+        <div>
+          <input
+            type="file"
+            accept="*.json"
+            onChange={e => this._handleImport(e.target.files[0])}
+          />
+          <button
+            className="btn btn-danger"
+            onClick={this._handleExport}
+          >
+            Export
+          </button>
+        </div>
+        <Select
+          options={heroData}
+          onChange={this._handleSelectHero}
+          labelField="name"
+          valueField="id"
+          style={{ width: '20%' }}
+        />
       </div>
     );
   }
 };
 
-const mapDispatchToProps = () => dispatch => {
+const mapStateToProp = state => {
   return {
-    getHeroStats: (heroName, equipedItems) => dispatch(getHeroStats(heroName, equipedItems)),
+    gearData: state.gearData
   }
 }
 
-export default connect(null, mapDispatchToProps)(E7App);
+const mapDispatchToProps = () => dispatch => {
+  return {
+    getHeroStats: (heroName, equipedItems) => dispatch(getHeroStats(heroName, equipedItems)),
+    setHeroGear: (heroId, gear) => dispatch(setHeroGear(heroId, gear)),
+    updateHeroGear: gear => dispatch(updateHeroGear(gear)),
+  }
+}
+
+export default connect(mapStateToProp, mapDispatchToProps)(E7App);
